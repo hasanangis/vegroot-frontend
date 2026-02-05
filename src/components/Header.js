@@ -70,6 +70,7 @@ export default function Header() {
     if (!searchTerm.trim()) return;
     router.push(`/search?q=${searchTerm.toLowerCase()}`);
     setSearchTerm(""); 
+    setIsMobileMenuOpen(false); 
   };
 
   return (
@@ -104,6 +105,7 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-4 z-50">
+            {/* MASAÜSTÜ ARAMA */}
             <form onSubmit={handleSearch} className="relative hidden lg:block">
               <input 
                 type="text"
@@ -155,7 +157,6 @@ export default function Header() {
                       </Link>
                     )}
                     
-                    {/* ŞİFRE DEĞİŞTİRME  */}
                     <Link 
                       href="/settings" 
                       onClick={() => setIsProfileMenuOpen(false)} 
@@ -178,6 +179,7 @@ export default function Header() {
               </Link>
             )}
 
+            {/* MOBİL MENÜ BUTONU */}
             <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden p-2 text-green-900 transition-transform active:scale-90">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
             </button>
@@ -188,6 +190,19 @@ export default function Header() {
       {/* MOBİL MENÜ */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 p-6 flex flex-col gap-4 shadow-xl animate-in slide-in-from-top duration-300">
+          
+          {/* MOBİL ARAMA KUTUSU */}
+          <form onSubmit={handleSearch} className="relative mb-2">
+            <input 
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder={language === 'tr' ? "Tarif ara..." : "Search..."}
+              className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-3 px-4 pl-10 text-sm focus:ring-2 focus:ring-green-500 outline-none text-gray-800"
+            />
+            <span className="absolute left-3 top-3.5 opacity-40">🔍</span>
+          </form>
+
           <Link href="/aegean-cuisine" className="font-bold text-gray-700 border-b pb-2 hover:text-green-700 transition-colors">
             {language === 'tr' ? 'Ege Mutfağı' : 'Aegean Cuisine'}
           </Link>
@@ -198,7 +213,6 @@ export default function Header() {
             {language === 'tr' ? 'Hikayemiz' : 'Our Story'}
           </Link>
           
-          {/* MOBİL ŞİFRE DEĞİŞTİRME */}
           {user && (
             <Link href="/settings" className="font-bold text-gray-700 border-b pb-2 hover:text-green-700 transition-colors">
               🔐 {language === 'tr' ? 'Şifre Değiştir' : 'Change Password'}
@@ -210,7 +224,7 @@ export default function Header() {
               {language === 'tr' ? 'Giriş Yap' : 'Login'}
             </Link>
           ) : (
-            <button onClick={handleLogout} className="bg-red-50 text-red-600 text-center py-3 rounded-xl font-bold hover:bg-red-100 transition-all">
+            <button onClick={handleLogout} className="bg-red-50 text-red-600 text-center py-3 rounded-xl font-bold hover:bg-red-100 transition-all shadow-sm">
               {language === 'tr' ? 'Çıkış Yap' : 'Logout'}
             </button>
           )}
