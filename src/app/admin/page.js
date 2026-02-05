@@ -15,7 +15,6 @@ export default function AdminDashboard() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [allRecipes, setAllRecipes] = useState([]);
-  const [newPassword, setNewPassword] = useState(''); 
   const [searchTerm, setSearchTerm] = useState("");
 
   const [recipe, setRecipe] = useState({
@@ -29,7 +28,6 @@ export default function AdminDashboard() {
     return `${process.env.NEXT_PUBLIC_API_URL}${url}`; 
   };
 
-  
   useEffect(() => {
     document.documentElement.lang = language;
   }, [language]);
@@ -108,21 +106,79 @@ export default function AdminDashboard() {
         
         {/* YENİ TARİF FORMU */}
         <form onSubmit={handleSubmit} className="bg-white p-8 rounded-3xl shadow-xl space-y-6 border border-green-50">
+          {/* BAŞLIKLAR */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <input 
               required 
               placeholder={language === 'tr' ? "Tarif Adı (TR)" : "Recipe Title (TR)"} 
               value={recipe.title_tr} 
               onChange={(e) => setRecipe({...recipe, title_tr: e.target.value})} 
-              className="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 transition-all" 
+              className="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 transition-all text-gray-800" 
             />
             <input 
               required 
               placeholder={language === 'tr' ? "Tarif Adı (EN)" : "Recipe Title (EN)"} 
               value={recipe.title_en} 
               onChange={(e) => setRecipe({...recipe, title_en: e.target.value})} 
-              className="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 transition-all" 
+              className="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 transition-all text-gray-800" 
             />
+          </div>
+
+          {/* MALZEMELER */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <textarea 
+              required 
+              placeholder={language === 'tr' ? "Malzemeler (TR)" : "Ingredients (TR)"} 
+              value={recipe.malzemeler_tr} 
+              onChange={(e) => setRecipe({...recipe, malzemeler_tr: e.target.value})} 
+              className="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 transition-all text-gray-800 min-h-[120px]" 
+            />
+            <textarea 
+              required 
+              placeholder={language === 'tr' ? "Malzemeler (EN)" : "Ingredients (EN)"} 
+              value={recipe.malzemeler_en} 
+              onChange={(e) => setRecipe({...recipe, malzemeler_en: e.target.value})} 
+              className="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 transition-all text-gray-800 min-h-[120px]" 
+            />
+          </div>
+
+          {/* HAZIRLANIŞ */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <textarea 
+              required 
+              placeholder={language === 'tr' ? "Hazırlanış (TR)" : "Instructions (TR)"} 
+              value={recipe.instructions_tr} 
+              onChange={(e) => setRecipe({...recipe, instructions_tr: e.target.value})} 
+              className="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 transition-all text-gray-800 min-h-[150px]" 
+            />
+            <textarea 
+              required 
+              placeholder={language === 'tr' ? "Hazırlanış (EN)" : "Instructions (EN)"} 
+              value={recipe.instructions_en} 
+              onChange={(e) => setRecipe({...recipe, instructions_en: e.target.value})} 
+              className="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 transition-all text-gray-800 min-h-[150px]" 
+            />
+          </div>
+
+          {/* MUTFAK VE KATEGORİ SEÇİMİ */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <select 
+              value={recipe.cuisine} 
+              onChange={(e) => setRecipe({...recipe, cuisine: e.target.value})} 
+              className="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 text-gray-800"
+            >
+              <option value="aegean">Ege Mutfağı</option>
+              <option value="world">Dünya Mutfağı</option>
+            </select>
+            <select 
+              value={recipe.category} 
+              onChange={(e) => setRecipe({...recipe, category: e.target.value})} 
+              className="w-full p-4 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-green-500 text-gray-800"
+            >
+              <option value="starter">Başlangıç</option>
+              <option value="main">Ana Yemek</option>
+              <option value="dessert">Tatlı</option>
+            </select>
           </div>
           
           <input 
@@ -132,8 +188,8 @@ export default function AdminDashboard() {
             className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
           />
 
-          <button disabled={isLoading} className="w-full py-4 bg-green-900 text-white rounded-xl font-bold hover:bg-green-800 transition-all active:scale-[0.98]">
-            {isLoading ? "..." : (language === 'tr' ? "Yayınla 🚀" : "Publish 🚀")}
+          <button disabled={isLoading} className="w-full py-4 bg-green-900 text-white rounded-xl font-bold hover:bg-green-800 transition-all active:scale-[0.98] shadow-lg">
+            {isLoading ? (language === 'tr' ? "İşleniyor..." : "Processing...") : (language === 'tr' ? "Yayınla 🚀" : "Publish 🚀")}
           </button>
         </form>
 
